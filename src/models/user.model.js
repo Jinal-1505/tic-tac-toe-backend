@@ -7,6 +7,18 @@ const userSchema = new mongoose.Schema(
     lastName: { type: String, required: true },
     password: { type: String, required: true, select: false },
     email: { type: String, required: true, unique: true },
+    wins: {
+      type: Number,
+      default: 0,
+    },
+    losses: {
+      type: Number,
+      default: 0,
+    },
+    draws: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

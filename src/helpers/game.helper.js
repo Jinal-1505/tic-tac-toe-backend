@@ -1,3 +1,5 @@
+import User from '../models/user.model.js';
+
 // Check for a winner in the board state
 export const checkWinner = (boardState) => {
   const winningCombinations = [
@@ -62,8 +64,6 @@ export const checkWinner = (boardState) => {
 
 // Update player stats based on game result
 export const updatePlayerStats = async (winnerId, players) => {
-  const User = (await import('../models/user.model.js')).default;
-
   for (const playerId of players) {
     const update = winnerId
       ? {

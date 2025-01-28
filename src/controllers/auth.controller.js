@@ -1,5 +1,6 @@
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
+import { generateToken } from '../utils/token.util.js';
 import bcrypt from 'bcrypt';
 
 /**
@@ -54,17 +55,8 @@ export const signIn = async (req, res) => {
       return res.send({ statusCode: 401, message: 'Invalid Email or password' });
     }
 
-    // Generate a JWT token with the user's ID and email
-    const token = jwt.sign(
-      {
-        _id: user._id,
-        email: user.email,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.TOKEN_EXPIRATION,
-      }
-    );
+    // Generate and set token in a cookie
+    const token = generateToken(emailExist._id, res);
 
     res.status(200).json({
       message: 'User logged in successfully',
@@ -73,5 +65,20 @@ export const signIn = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+/**
+ * Logout
+ * @param {*} req
+ * @param {*} res
+ */
+export const logout = (req, res) => {
+  try {
+    res.cookie('jwt', '', { maxAge: 0 });
+    res.status(200).json({ success: true, message: 'Logged out successfully' });
+  } catch (error) {
+    console.log('Error in logout controller', error.message);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };

@@ -60,7 +60,7 @@ export const joinGameRoom = async (req, res) => {
     }
 
     roomDetail.players.push(req.user._id);
-    await GameRoom.create();
+    await GameRoom.save();
 
     res.status(200).json({
       message: 'Room Joined successfully',
